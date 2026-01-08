@@ -1,6 +1,6 @@
 {
-  "name": "youtube-transcript-ts",
-  "version": "1.4.0",
+  "name": "yt-transcript-fetcher",
+  "version": "1.0.0",
   "description": "TypeScript library for fetching YouTube video transcripts",
   "keywords": [
     "youtube",
@@ -9,13 +9,13 @@
     "captions",
     "api"
   ],
-  "homepage": "https://github.com/Jonatna0990/youtube-transcript-ts#readme",
+  "homepage": "https://github.com/Jonatna0990/yt-transcript-fetcher#readme",
   "bugs": {
-    "url": "https://github.com/Jonatna0990/youtube-transcript-ts/issues"
+    "url": "https://github.com/Jonatna0990/yt-transcript-fetcher/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Jonatna0990/youtube-transcript-ts.git"
+    "url": "git+https://github.com/Jonatna0990/yt-transcript-fetcher.git"
   },
   "license": "MIT",
   "author": "Gazaryan Georgie",
