@@ -2,9 +2,24 @@
   "name": "youtube-transcript-api",
   "version": "1.0.0",
   "description": "TypeScript library for fetching YouTube video transcripts",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "keywords": [
+    "youtube",
+    "transcript",
+    "subtitles",
+    "captions",
+    "api"
+  ],
+  "homepage": "https://github.com/Jonatna0990/youtube-transcript-api-ts#readme",
+  "bugs": {
+    "url": "https://github.com/Jonatna0990/youtube-transcript-api-ts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jonatna0990/youtube-transcript-api-ts.git"
+  },
+  "license": "MIT",
+  "author": "Gazaryan Georgie",
+  "type": "commonjs",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -22,6 +37,8 @@
       "require": "./dist/proxies.js"
     }
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -33,15 +50,13 @@
     "lint": "eslint src",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [
-    "youtube",
-    "transcript",
-    "subtitles",
-    "captions",
-    "api"
-  ],
-  "author": "",
-  "license": "MIT",
+  "dependencies": {
+    "express": "^4.22.1",
+    "fast-xml-parser": "^4.3.0",
+    "he": "^1.2.0",
+    "https-proxy-agent": "^7.0.6",
+    "node-fetch": "^3.3.2"
+  },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/he": "^1.2.0",
@@ -50,14 +65,8 @@
     "typescript": "^5.3.0",
     "vitest": "^1.0.0"
   },
-  "dependencies": {
-    "express": "^4.22.1",
-    "fast-xml-parser": "^4.3.0",
-    "he": "^1.2.0",
-    "https-proxy-agent": "^7.0.6",
-    "node-fetch": "^3.3.2"
-  },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "module": "dist/index.mjs"
 }
