@@ -36,28 +36,19 @@ jobs:
         run: npm cache clean --force
 
       - name: Install dependencies
-        run: |
-          # Retry logic for npm install due to potential network issues
-          for i in 1 2 3; do
-            npm ci && break || {
-              echo "Attempt $i failed, retrying..."
-              npm cache clean --force
-              sleep 5
-            }
-          done
+        run: npm ci
 
       - name: Verify installation
         run: |
           echo "Node: $(node --version)"
           echo "NPM: $(npm --version)"
-          echo "Checking vitest..."
-          npx vitest --version || npm ls vitest
+          ls -la node_modules/.bin/ | head -20
 
       - name: Run tests
-        run: npm test -- --run --reporter=verbose
+        run: npx vitest run --reporter=verbose
 
       - name: Run build
-        run: npm run build
+        run: npx tsup
 
       - name: Verify build output
         run: |
