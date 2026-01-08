@@ -1,5 +1,5 @@
 {
-  "name": "youtube-transcript-api",
+  "name": "youtube-transcript-ts",
   "version": "1.0.1",
   "description": "TypeScript library for fetching YouTube video transcripts",
   "keywords": [
@@ -9,13 +9,13 @@
     "captions",
     "api"
   ],
-  "homepage": "https://github.com/Jonatna0990/youtube-transcript-api-ts#readme",
+  "homepage": "https://github.com/Jonatna0990/youtube-transcript-ts#readme",
   "bugs": {
-    "url": "https://github.com/Jonatna0990/youtube-transcript-api-ts/issues"
+    "url": "https://github.com/Jonatna0990/youtube-transcript-ts/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Jonatna0990/youtube-transcript-api-ts.git"
+    "url": "git+https://github.com/Jonatna0990/youtube-transcript-ts.git"
   },
   "license": "MIT",
   "author": "Gazaryan Georgie",
