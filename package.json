@@ -1,6 +1,6 @@
 {
   "name": "youtube-transcript-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "TypeScript library for fetching YouTube video transcripts",
   "keywords": [
     "youtube",
