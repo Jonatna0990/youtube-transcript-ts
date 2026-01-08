@@ -1,5 +1,3 @@
-import nodeFetch, { type RequestInit } from 'node-fetch';
-import { HttpsProxyAgent } from 'https-proxy-agent';
 import type { ProxyConfig } from './proxies';
 
 export interface HttpClientOptions {
@@ -14,6 +12,17 @@ export interface HttpResponse {
   json<T = unknown>(): Promise<T>;
 }
 
+// Dynamic import for proxy agent (only when needed)
+let HttpsProxyAgent: any = null;
+
+async function getProxyAgent(proxyUrl: string): Promise<any> {
+  if (!HttpsProxyAgent) {
+    const module = await import('https-proxy-agent');
+    HttpsProxyAgent = module.HttpsProxyAgent;
+  }
+  return new HttpsProxyAgent(proxyUrl);
+}
+
 /**
  * HTTP client wrapper with proxy and cookie support.
  */
@@ -21,7 +30,8 @@ export class HttpClient {
   private readonly proxyConfig?: ProxyConfig;
   private readonly defaultHeaders: Record<string, string>;
   private readonly cookies: Map<string, { value: string; domain: string }> = new Map();
-  private readonly agent?: HttpsProxyAgent<string>;
+  private agent?: any;
+  private proxyUrl?: string;
 
   constructor(options: HttpClientOptions = {}) {
     this.proxyConfig = options.proxyConfig;
@@ -35,11 +45,8 @@ export class HttpClient {
       this.defaultHeaders['Connection'] = 'close';
     }
 
-    // Set up proxy agent
-    const proxyUrl = this.getProxyUrl();
-    if (proxyUrl) {
-      this.agent = new HttpsProxyAgent(proxyUrl);
-    }
+    // Get proxy URL for later use
+    this.proxyUrl = this.getProxyUrl();
   }
 
   private getProxyUrl(): string | undefined {
@@ -49,8 +56,15 @@ export class HttpClient {
       return proxyDict.https;
     }
     // Fall back to environment variables
-    return process.env.HTTPS_PROXY || process.env.https_proxy ||
-           process.env.HTTP_PROXY || process.env.http_proxy;
+    const env = typeof process !== 'undefined' ? process.env : {};
+    return env.HTTPS_PROXY || env.https_proxy || env.HTTP_PROXY || env.http_proxy;
+  }
+
+  private async getAgent(): Promise<any> {
+    if (this.proxyUrl && !this.agent) {
+      this.agent = await getProxyAgent(this.proxyUrl);
+    }
+    return this.agent;
   }
 
   setCookie(name: string, value: string, domain: string): void {
@@ -77,13 +91,29 @@ export class HttpClient {
   }
 
   async get(url: string, options?: { headers?: Record<string, string> }): Promise<HttpResponse> {
-    const requestOptions: RequestInit = {
+    const agent = await this.getAgent();
+
+    // Use node-fetch for proxy support, native fetch otherwise
+    if (agent) {
+      const nodeFetch = (await import('node-fetch')).default;
+      const response = await nodeFetch(url, {
+        method: 'GET',
+        headers: this.getHeaders(options?.headers),
+        agent,
+      });
+      return {
+        status: response.status,
+        statusText: response.statusText,
+        text: () => response.text(),
+        json: <T>() => response.json() as Promise<T>,
+      };
+    }
+
+    // Use native fetch when no proxy
+    const response = await fetch(url, {
       method: 'GET',
       headers: this.getHeaders(options?.headers),
-      agent: this.agent,
-    };
-
-    const response = await nodeFetch(url, requestOptions);
+    });
 
     return {
       status: response.status,
@@ -98,17 +128,37 @@ export class HttpClient {
     body: unknown,
     options?: { headers?: Record<string, string> }
   ): Promise<HttpResponse> {
-    const requestOptions: RequestInit = {
+    const agent = await this.getAgent();
+
+    // Use node-fetch for proxy support, native fetch otherwise
+    if (agent) {
+      const nodeFetch = (await import('node-fetch')).default;
+      const response = await nodeFetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...this.getHeaders(options?.headers),
+        },
+        body: JSON.stringify(body),
+        agent,
+      });
+      return {
+        status: response.status,
+        statusText: response.statusText,
+        text: () => response.text(),
+        json: <T>() => response.json() as Promise<T>,
+      };
+    }
+
+    // Use native fetch when no proxy
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         ...this.getHeaders(options?.headers),
       },
       body: JSON.stringify(body),
-      agent: this.agent,
-    };
-
-    const response = await nodeFetch(url, requestOptions);
+    });
 
     return {
       status: response.status,
