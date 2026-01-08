@@ -1,0 +1,72 @@
+# CI Pipeline for youtube-subtitles-ts
+#
+# Workflow:
+# 1. Test Job - Runs on all pushes and PRs
+#    - Type checking
+#    - Unit tests
+#    - Build verification
+
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Clean npm cache
+        run: npm cache clean --force
+
+      - name: Install dependencies
+        run: |
+          # Retry logic for npm install due to potential network issues
+          for i in 1 2 3; do
+            npm ci && break || {
+              echo "Attempt $i failed, retrying..."
+              npm cache clean --force
+              sleep 5
+            }
+          done
+
+      - name: Verify installation
+        run: |
+          echo "Node: $(node --version)"
+          echo "NPM: $(npm --version)"
+          echo "Checking vitest..."
+          npx vitest --version || npm ls vitest
+
+      - name: Run type check
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test -- --run --reporter=verbose
+
+      - name: Run build
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          echo "Checking dist folder..."
+          ls -la dist/
+          test -f dist/index.js && echo "✅ index.js exists" || exit 1
+          test -f dist/index.mjs && echo "✅ index.mjs exists" || exit 1
+          test -f dist/index.d.ts && echo "✅ index.d.ts exists" || exit 1
