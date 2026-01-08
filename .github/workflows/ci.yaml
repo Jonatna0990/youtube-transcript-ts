@@ -2,9 +2,8 @@
 #
 # Workflow:
 # 1. Test Job - Runs on all pushes and PRs
-#    - Type checking
 #    - Unit tests
-#    - Build verification
+#    - Build verification (includes type checking via tsup)
 
 name: CI
 
@@ -53,9 +52,6 @@ jobs:
           echo "NPM: $(npm --version)"
           echo "Checking vitest..."
           npx vitest --version || npm ls vitest
-
-      - name: Run type check
-        run: npm run typecheck
 
       - name: Run tests
         run: npm test -- --run --reporter=verbose
