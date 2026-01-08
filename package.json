@@ -1,0 +1,63 @@
+{
+  "name": "youtube-transcript-api",
+  "version": "1.0.0",
+  "description": "TypeScript library for fetching YouTube video transcripts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./formatters": {
+      "types": "./dist/formatters.d.ts",
+      "import": "./dist/formatters.mjs",
+      "require": "./dist/formatters.js"
+    },
+    "./proxies": {
+      "types": "./dist/proxies.d.ts",
+      "import": "./dist/proxies.mjs",
+      "require": "./dist/proxies.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "youtube",
+    "transcript",
+    "subtitles",
+    "captions",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/he": "^1.2.0",
+    "@types/node": "^20.10.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {
+    "express": "^4.22.1",
+    "fast-xml-parser": "^4.3.0",
+    "he": "^1.2.0",
+    "https-proxy-agent": "^7.0.6",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
