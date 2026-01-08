@@ -1,13 +1,25 @@
 {
   "name": "youtube-subtitles-ts",
   "version": "1.0.0",
-  "description": "TypeScript library for fetching YouTube video transcripts",
+  "description": "Fetch YouTube video transcripts and subtitles. No API key required. Supports SRT, WebVTT, multiple languages, auto-generated captions, and translations.",
   "keywords": [
     "youtube",
     "transcript",
     "subtitles",
     "captions",
-    "api"
+    "api",
+    "typescript",
+    "srt",
+    "webvtt",
+    "closed-captions",
+    "video",
+    "yt",
+    "node",
+    "nodejs",
+    "scraper",
+    "auto-generated",
+    "translation",
+    "innertube"
   ],
   "homepage": "https://github.com/Jonatna0990/youtube-subtitles-ts#readme",
   "bugs": {
@@ -51,14 +63,12 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "express": "^4.22.1",
     "fast-xml-parser": "^4.3.0",
     "he": "^1.2.0",
     "https-proxy-agent": "^7.0.6",
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6",
     "@types/he": "^1.2.0",
     "@types/node": "^20.10.0",
     "tsup": "^8.0.1",

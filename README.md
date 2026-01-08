@@ -15,13 +15,13 @@ A TypeScript library for fetching YouTube video transcripts. No browser required
 ## Installation
 
 ```bash
-npm install youtube-transcript-api
+npm install youtube-subtitles-ts
 ```
 
 ## Quick Start
 
 ```typescript
-import { YouTubeTranscriptApi } from 'youtube-transcript-api';
+import { YouTubeTranscriptApi } from 'youtube-subtitles-ts';
 
 const api = new YouTubeTranscriptApi();
 
@@ -131,7 +131,7 @@ import {
   TextFormatter,
   SRTFormatter,
   WebVTTFormatter
-} from 'youtube-transcript-api';
+} from 'youtube-subtitles-ts';
 
 const transcript = await api.fetch('VIDEO_ID');
 
@@ -151,7 +151,7 @@ const webvtt = new WebVTTFormatter().formatTranscript(transcript);
 Or use the formatter loader:
 
 ```typescript
-import { loadFormatter } from 'youtube-transcript-api';
+import { loadFormatter } from 'youtube-subtitles-ts';
 
 const formatter = loadFormatter('srt'); // 'json' | 'text' | 'srt' | 'webvtt' | 'pretty'
 const output = formatter.formatTranscript(transcript);
@@ -164,7 +164,7 @@ If YouTube blocks your IP, you can use proxies:
 #### Generic Proxy
 
 ```typescript
-import { YouTubeTranscriptApi, GenericProxyConfig } from 'youtube-transcript-api';
+import { YouTubeTranscriptApi, GenericProxyConfig } from 'youtube-subtitles-ts';
 
 const api = new YouTubeTranscriptApi({
   proxyConfig: new GenericProxyConfig({
@@ -179,7 +179,7 @@ const api = new YouTubeTranscriptApi({
 For reliable IP rotation, use [Webshare](https://www.webshare.io/) residential proxies:
 
 ```typescript
-import { YouTubeTranscriptApi, WebshareProxyConfig } from 'youtube-transcript-api';
+import { YouTubeTranscriptApi, WebshareProxyConfig } from 'youtube-subtitles-ts';
 
 const api = new YouTubeTranscriptApi({
   proxyConfig: new WebshareProxyConfig({
@@ -204,7 +204,7 @@ import {
   NoTranscriptFound,
   VideoUnavailable,
   IpBlocked
-} from 'youtube-transcript-api';
+} from 'youtube-subtitles-ts';
 
 try {
   const transcript = await api.fetch('VIDEO_ID');
